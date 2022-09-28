@@ -1,59 +1,49 @@
-# EXPERIMENT-NO--03-INTERFACING-ANALOG-INPUT-SENSOR-POT-WITH-ARDUINO-
+# EXPERIMENT NO 05 INTERFACING ANALOG OUTPUT SERVO MOTOR WITH ARDUINO
 
-
-
-
-**AIM**:  To interface a Analog  input (angular displacement sensor POT) and scale the values up on change in the input.
-
-
-**COMPONENTS REQUIRED:**
-1.	10 KΩPOT
+### AIM
+To interface an Analog output (servo motor) and modify the angular displacement of the servo using PWM signal .
+COMPONENTS REQUIRED:
+1.	Servo motor of choice (9v is preferred )
 2.	1 KΩ resistor 
 3.	Arduino Uno 
 4.	USB Interfacing cable 
 5.	Connecting wires 
-6.	LED of choice 
-**
+6.	Servo rated power supply (dc source )
 
 
-**THEORY**: 
+### THEORY
+Servo motors and are constructed out of basic DC motors, by adding:
+•	 gear reduction
+•	 a position sensor for the motor shaft
+•	 an electronic circuit that controls the motor's operation
+Typically, a potentiometer (variable resistor) measures the position of the output shaft at all times so the controller can accurately place and maintain its setting.
+Servo motors are used for angular positioning, such as in radio control airplanes.  They typically have a movement range of 180 deg but can go up to 210 deg.The output shaft of a servo does not rotate freely, but rather is made to seek a particular angular position under electronic control. 
 
-**Analog signals:**
 
-Analog signals – directly measurable quantities in terms of some other quantity.
-Examples:
-1. Thermometer – mercury height rises as temperature rises
-2. Car Speedometer – Needle moves farther right as you accelerate
-3. Stereo – Volume increases as you turn the knob
-Reason for conversion of analog to digital quantity is that as the controller or any microprocessor works with digital signals in the form of 0 and 1s, in order to make the signal compatible  most of the analog signals are converted into its equivalent digital level signals using an analog to digital converter .
-Quantizing - breaking down analog value is a set of finite states
-Encoding - assigning a digital word or number to each state and matching it to the input signal
- There are two ways to best improve accuracy of A/D conversion:
-Increasing the resolution which improves the accuracy in measuring the amplitude of the analog signal.
-Increasing the sampling rate which increases the maximum frequency that can be measured.
-General specifications of analog sensor
-	1. Range
-	2. Accuracy
-	3.Linearity
-	4.Compatiblity
-	5. signal conversion capability
+![image](https://user-images.githubusercontent.com/36288975/163544439-1f477927-fcd4-42f0-9ce4-c863fdbf1210.png)
 
-**Potentiometer**
-A potentiometer, informally a pot, is a three-terminal resistor with a sliding or rotating contact that forms an adjustable voltage divider. If only two terminals are used, one end and the wiper, it acts as a variable resistor or rheostat.
-Potentiometers are commonly used to control electrical devices such as volume controls on audio equipment. Potentiometers operated by a mechanism can be used as position transducers, for example, in a joystick. Potentiometers are rarely used to directly control significant power (more than a watt), since the power dissipated in the potentiometer would be comparable to the power in the controlled load
-CIRCUIT DIAGRAM
+
+
+#### Figure-01 SERVO MOTOR SPLIT VIEW 
+Control 
+An external controller (such as the Arduino) tells the servo where to go with a signal know as pulse proportional modulation (PPM) or pulse code modulation (which is often confused with pulse width modulation, PWM). PWM uses 1 to 2ms out of a 20ms time period to encode its information.
+ 
+ 
+ ![image](https://user-images.githubusercontent.com/36288975/163544482-3027136f-7135-4f3d-a23f-8dc2fe04194d.png)
+
+### Figure-02 SERVO MOTOR PINS
+
+ ![image](https://user-images.githubusercontent.com/36288975/163544513-ca497421-e6ba-4f91-871f-5cfba77f22a8.png)
 
 
 
 
+### CIRCUIT DIAGRAM
 
-![image](https://user-images.githubusercontent.com/36288975/163530788-eec3cdc3-95e8-4d2d-8349-6d0ea4c9439c.png)
+![exp 6](https://user-images.githubusercontent.com/75234646/167767436-2c04fcc6-610a-47ea-92f7-2e66719b0e88.png)
 
-**FIGURE -01
-**
 
-**PROCEDURE:**
-
+### PROCEDURE:
 1.	Connect the circuit as per the circuit diagram 
 2.	Connect the board to your computer via the USB cable.
 3.	If needed, install the drivers.
@@ -62,52 +52,32 @@ CIRCUIT DIAGRAM
 6.	Select your serial port, accordingly ( E.g. COM5 )
 7.	Open the file of the program  and verify the error , clear if any errors that are existing 
 8.	Upload the program and check for the physical working. 
-9.	Ensure safety before powering up the device 
+9.	Ensure safety before powering up the device.
 
 
-
-**PROGRAM** 
- ```c
+### PROGRAM :
  
- void setup()
+```c
+
+#include <Servo.h>
+Servo servobase;
+void setup()
 {
- pinMode(A0, INPUT);
- pinMode(7, OUTPUT);
- pinMode(8, OUTPUT);
- Serial.begin(9600);
- 
-}
+servobase.attach(A0);
+    servobase.write(0);
 
+Serial.begin(9600);
+}
 void loop()
 {
- int Sensorvalue = analogRead(A0);
- //Serial.print("Sensor Value = ");
- Serial.println(Sensorvalue);
- //delay(500);
- if(Sensorvalue<=30)
- {
-   digitalWrite(8, HIGH);
-   digitalWrite(7, LOW);
- }
- else if(Sensorvalue>=500)
- {
-   digitalWrite(8,LOW);
-   digitalWrite(7,HIGH);
- }
+ int i = Serial.parseInt();  
+  servobase.write(i);
+delay(1000);
 }
 
- 
 ```
 
 
 
-Simulation output:
-
-
-![2](https://user-images.githubusercontent.com/77089276/166478612-aa48dd30-995a-4863-9bda-91509a1295de.png)
-![3](https://user-images.githubusercontent.com/77089276/166478621-bc07cb46-bf5c-47c5-9b8a-6fc73800bbce.png)
-
-
-
-
-RESULT:  Arduino uno analog input functioning is learned and interfaced with digital input switch .
+### RESULTS: 
+Arduino uno interfacing with servo motor is learned and angular position is controlled using PWM signal.
